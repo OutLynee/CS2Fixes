@@ -36,7 +36,7 @@ bool InitDetours(CGameConfig *gameConfig);
 void FlushAllDetours();
 
 void FASTCALL Detour_UTIL_SayTextFilter(IRecipientFilter &, const char *, CCSPlayerController *, uint64);
-void FASTCALL Detour_UTIL_SayText2Filter(IRecipientFilter &, CCSPlayerController *, uint64, const char *, const char *, const char *, const char *, const char *);
+void FASTCALL Detour_UTIL_SayTextFilter(IRecipientFilter &, CCSPlayerController *, uint64, const char *, const char *, const char *, const char *, const char *);
 void FASTCALL Detour_Host_Say(CCSPlayerController *, CCommand &, bool, int, const char *);
 bool FASTCALL Detour_IsHearingClient(void*, int);
 void FASTCALL Detour_CSoundEmitterSystem_EmitSound(ISoundEmitterSystemBase *, CEntityIndex *, IRecipientFilter &, uint32, void *);
