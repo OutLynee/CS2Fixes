@@ -186,13 +186,13 @@ char sBuffer[256];
     {
         V_snprintf(sBuffer, sizeof(sBuffer), " \1[\13OWNER\1] \10%s: \4%s", param1, param2);    
     }
-    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM1)) // t
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM1)) // o
     {
         V_snprintf(sBuffer, sizeof(sBuffer), " \1[\14CO-OWNER\1] \10%s: \4%s", param1, param2);
     }
     else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM2)) // p
     {
-        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\4ADMINISTRATOR\1]\10 %s: \4%s", param1, param2);    
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\4ADMIN\1]\10 %s: \4%s", param1, param2);    
     }
     else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM3)) // q
     {

@@ -135,6 +135,7 @@ CON_COMMAND_CHAT(medic, "medic")
 	pZEPlayer->SetUsedMedkit(true);
 
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Medkit used! Your health is now %d", health);
+	g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play items/smallmedkit1");
 }
 CON_COMMAND_CHAT(stats, "get your stats")
 {
