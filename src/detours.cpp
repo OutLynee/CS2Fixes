@@ -236,7 +236,10 @@ void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, 
                 if (!cPlayer || !pPlayer || pPlayer->IsFakeClient() || !pPlayer->IsAdminFlagSet(ADMFLAG_SLAY))
                     continue;
 
-                ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+                //ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+				ClientPrint(cPlayer, HUD_PRINTTALK," \3*************\14Admins Chat\3*************");
+        		ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+      			ClientPrint(cPlayer, HUD_PRINTTALK, " \3**************************************");
             }
             return;
         }

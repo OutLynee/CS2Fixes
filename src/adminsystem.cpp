@@ -483,7 +483,7 @@ CON_COMMAND_CHAT_FLAGS(move, "set a player's team", ADMFLAG_SLAY)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !setteam <name> <team (0-3)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !move <name> <team (ct,t,spec)>");
 		return;
 	}
 
