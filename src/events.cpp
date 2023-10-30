@@ -141,6 +141,29 @@ GAME_EVENT_F(player_spawn)
         {
             pController->m_szClan("[ADMIN]");     				//
         } 
+	if (pPlayer->IsAdminFlagSet(ADMFLAG_ROOT)) // z
+    {
+         pController->m_szClan("[Owner]");    
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM6)) // t
+    {
+         pController->m_szClan("[Co-Owner]");
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM2)) // p
+    {
+         pController->m_szClan("[Administrator]");    
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM3)) // q
+    {
+         pController->m_szClan("[Moderator]"););    
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM1)) //o
+    {
+         pController->m_szClan("[Helper]");
+    }
+    else {
+         pController->m_szClan("[Player]");
+    }
 
 
 

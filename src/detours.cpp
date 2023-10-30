@@ -279,34 +279,7 @@ void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, 
     if (*args[1] == '!' || *args[1] == '/')
         ParseChatCommand(args[1], pController);
 }
-/*
-void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, bool teamonly, int unk1, const char *unk2)
-{
-	bool bGagged = pController && pController->GetZEPlayer()->IsGagged();
 
-	if (!bGagged && *args[1] != '/')
-	{
-		Host_Say(pController, args, teamonly, unk1, unk2);
-
-		if (pController)
-		{
-			IGameEvent *pEvent = g_gameEventManager->CreateEvent("player_chat");
-
-			if (pEvent)
-			{
-				pEvent->SetBool("teamonly", teamonly);
-				pEvent->SetInt("userid", pController->entindex());
-				pEvent->SetString("text", args[1]);
-
-				g_gameEventManager->FireEvent(pEvent, true);
-			}
-		}
-	}
-
-	if (*args[1] == '!' || *args[1] == '/')
-		ParseChatCommand(args[1], pController);
-}
-*/
 void Detour_Log()
 {
 	return;
