@@ -306,7 +306,7 @@ CON_COMMAND_CHAT_FLAGS(gag, "gag a player", ADMFLAG_CHAT)
 
 	if (iDuration == 0 && nType >= ETargetType::ALL)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "You may only permanently gag individuals.");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Doar individual pentru permanent gag.");
 		return;
 	}
 
@@ -483,7 +483,7 @@ CON_COMMAND_CHAT_FLAGS(move, "set a player's team", ADMFLAG_SLAY)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !move <name> <team (ct,t,spec)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Foloseste: !move <name> <team (ct,t,spec)>");
 		return;
 	}
 
