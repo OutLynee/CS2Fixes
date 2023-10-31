@@ -473,8 +473,8 @@ CON_COMMAND_CHAT_FLAGS(slay, "slay a player", ADMFLAG_SLAY)
 
 	PrintMultiAdminAction(nType, pszCommandPlayerName, "slayed");
 }
+
 CON_COMMAND_CHAT_FLAGS(slap, "slap a player", ADMFLAG_SLAY)
-/*
 {
 	if (args.ArgC() < 2)
 	{
@@ -525,7 +525,7 @@ CON_COMMAND_CHAT_FLAGS(slap, "slap a player", ADMFLAG_SLAY)
 	}
 
 	PrintMultiAdminAction(nType, pszCommandPlayerName, "slapped");
-}*/
+}
 //****************************************************MOVE******************************************************
 bool caseInsensitiveStringCompare( const std::string& str1, const std::string& str2 ) {
     std::string str1Cpy( str1 );
