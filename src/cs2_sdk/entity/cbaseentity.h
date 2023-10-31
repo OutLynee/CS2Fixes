@@ -124,6 +124,7 @@ public:
 	SCHEMA_FIELD_POINTER(CNetworkTransmitComponent, m_NetworkTransmitComponent)
 	SCHEMA_FIELD(int, m_iHealth)
 	SCHEMA_FIELD(int, m_iTeamNum)
+	SCHEMA_FIELD(Vector, m_vecAbsVelocity)
 	SCHEMA_FIELD(Vector, m_vecBaseVelocity)
 	SCHEMA_FIELD(CCollisionProperty*, m_pCollision)
 	SCHEMA_FIELD(MoveType_t, m_MoveType)
@@ -166,6 +167,12 @@ public:
 		static int offset = g_GameConfig->GetOffset("IsEntityController");
 		return CALL_VIRTUAL(bool, offset, this);
 	}
+	
+	void AcceptInput(const char *pInputName, CEntityInstance *pActivator = nullptr, CEntityInstance *pCaller = nullptr, variant_string_t *value = nullptr)
+	{
+		addresses::CEntityInstance_AcceptInput(this, pInputName, pActivator, pCaller, value, 0);
+	}
+
 
 	bool IsAlive() { return m_lifeState == LifeState_t::LIFE_ALIVE; }
 
