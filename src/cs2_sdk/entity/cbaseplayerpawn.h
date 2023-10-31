@@ -41,6 +41,14 @@ public:
 			Z_CBaseEntity::TakeDamage(iDamage);
 	}
 
+	void TakeDamage(int iDamage)
+	{
+		if (m_iHealth() - iDamage <= 0)
+			CommitSuicide(false, true);
+		else
+			Z_CBaseEntity::TakeDamage(iDamage);
+	}
+
 	void CommitSuicide(bool bExplode, bool bForce)
 	{
 		static int offset = g_GameConfig->GetOffset("CBasePlayerPawn_CommitSuicide");

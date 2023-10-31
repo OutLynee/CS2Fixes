@@ -124,6 +124,14 @@ public:
 		m_iHealth = m_iHealth() - iDamage;
 	}
 
+	void SetAbsVelocity(Vector vecVelocity) { m_vecAbsVelocity = vecVelocity; }
+	void SetBaseVelocity(Vector vecVelocity) { m_vecBaseVelocity = vecVelocity; }
+
+	void TakeDamage(int iDamage)
+	{
+		m_iHealth = m_iHealth() - iDamage;
+	}
+
 	void Teleport(Vector *position, QAngle *angles, Vector *velocity)
 	{
 		static int offset = g_GameConfig->GetOffset("Teleport");
@@ -153,6 +161,11 @@ public:
 		addresses::CEntityInstance_AcceptInput(this, pInputName, pActivator, pCaller, value, 0);
 	}
 
+
+	void AcceptInput(const char *pInputName, CEntityInstance *pActivator = nullptr, CEntityInstance *pCaller = nullptr, variant_string_t *value = nullptr)
+	{
+		addresses::CEntityInstance_AcceptInput(this, pInputName, pActivator, pCaller, value, 0);
+	}
 
 	bool IsAlive() { return m_lifeState == LifeState_t::LIFE_ALIVE; }
 

@@ -26,16 +26,18 @@
 #include "playermanager.h"
 #include "commands.h"
 #include "ctimer.h"
+#include "detours.h"
+#include "utils/entity.h"
+#include "entity/cgamerules.h"
 
 extern IVEngineServer2 *g_pEngineServer2;
 extern CEntitySystem *g_pEntitySystem;
 extern CGlobalVars *gpGlobals;
+extern CCSGameRules *g_pGameRules;
 
 CAdminSystem* g_pAdminSystem = nullptr;
 
 CUtlMap<uint32, CChatCommand *> g_CommandList(0, 0, DefLessFunc(uint32));
-
-#define ADMIN_PREFIX "Admin %s has "
 
 void PrintSingleAdminAction(const char *pszAdminName, const char *pszTargetName, const char *pszAction, const char *pszAction2 = "")
 {
@@ -472,6 +474,7 @@ CON_COMMAND_CHAT_FLAGS(slay, "slay a player", ADMFLAG_SLAY)
 	PrintMultiAdminAction(nType, pszCommandPlayerName, "slayed");
 }
 CON_COMMAND_CHAT_FLAGS(slap, "slap a player", ADMFLAG_SLAY)
+/*
 {
 	if (args.ArgC() < 2)
 	{
@@ -522,7 +525,7 @@ CON_COMMAND_CHAT_FLAGS(slap, "slap a player", ADMFLAG_SLAY)
 	}
 
 	PrintMultiAdminAction(nType, pszCommandPlayerName, "slapped");
-}
+}*/
 //****************************************************MOVE******************************************************
 bool caseInsensitiveStringCompare( const std::string& str1, const std::string& str2 ) {
     std::string str1Cpy( str1 );
@@ -803,6 +806,145 @@ CON_COMMAND_CHAT_FLAGS(noclip, "toggle noclip on yourself", ADMFLAG_ROOT)
 	}
 }
 
+CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_RCON)
+{
+	if (args.ArgC() < 3)
+	{
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !entfire <name> <input> <optional parameter>");
+		return;
+	}
+
+	variant_string_t value(args[3]);
+
+	int iFoundEnts = 0;
+
+	Z_CBaseEntity *pTarget = nullptr;
+
+	// The idea here is to only use one of the targeting modes at once, prioritizing !picker then targetname/!self then classname
+	// Try picker first, FindEntityByName can also take !picker but it always uses player 0 so we have to do this ourselves
+	if (player && !V_strcmp("!picker", args[1]))
+	{
+		pTarget = UTIL_FindPickerEntity(player);
+
+		if (pTarget)
+		{
+			pTarget->AcceptInput(args[2], player, player, &value);
+			iFoundEnts++;
+		}
+	}
+
+	// !self would resolve to the player controller, so here's a convenient alias to get the pawn instead
+	if (player && !V_strcmp("!selfpawn", args[1]))
+	{
+		pTarget = player->GetPawn();
+
+		if (pTarget)
+		{
+			pTarget->AcceptInput(args[2], player, player, &value);
+			iFoundEnts++;
+		}
+	}
+	
+	if (!iFoundEnts)
+	{
+		while (pTarget = UTIL_FindEntityByName(pTarget, args[1], player))
+		{
+			pTarget->AcceptInput(args[2], player, player, &value);
+			iFoundEnts++;
+		}
+	}
+
+	if (!iFoundEnts)
+	{
+		while (pTarget = UTIL_FindEntityByClassname(pTarget, args[1]))
+		{
+			pTarget->AcceptInput(args[2], player, player, &value);
+			iFoundEnts++;
+		}
+	}
+
+	if (!iFoundEnts)
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Target not found.");
+	else
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i entities.", iFoundEnts);
+}
+
+CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_RCON)
+{
+	if (args.ArgC() < 3)
+	{
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !entfirepawn <name> <input> <optional parameter>");
+		return;
+	}
+
+	int iCommandPlayer = player ? player->GetPlayerSlot() : -1;
+	int iNumClients = 0;
+	int pSlots[MAXPLAYERS];
+
+	ETargetType nType = g_playerManager->TargetPlayerString(iCommandPlayer, args[1], iNumClients, pSlots);
+
+	if (!iNumClients)
+	{
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Target not found.");
+		return;
+	}
+
+	variant_string_t value(args[3]);
+
+	int iFoundEnts = 0;
+
+	for (int i = 0; i < iNumClients; i++)
+	{
+		CCSPlayerController *pTarget = CCSPlayerController::FromSlot(pSlots[i]);
+
+		if (!pTarget || !pTarget->GetPawn())
+			continue;
+
+		pTarget->GetPawn()->AcceptInput(args[2], player, player, &value);
+		iFoundEnts++;
+	}
+
+	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i player pawns.", iFoundEnts);
+}
+
+CON_COMMAND_CHAT_FLAGS(entfirecontroller, "fire outputs at player controllers", ADMFLAG_RCON)
+{
+	if (args.ArgC() < 3)
+	{
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !entfirecontroller <name> <input> <optional parameter>");
+		return;
+	}
+
+	int iCommandPlayer = player ? player->GetPlayerSlot() : -1;
+	int iNumClients = 0;
+	int pSlots[MAXPLAYERS];
+
+	ETargetType nType = g_playerManager->TargetPlayerString(iCommandPlayer, args[1], iNumClients, pSlots);
+
+	if (!iNumClients)
+	{
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Target not found.");
+		return;
+	}
+
+	variant_string_t value(args[3]);
+
+	int iFoundEnts = 0;
+
+	for (int i = 0; i < iNumClients; i++)
+	{
+		CCSPlayerController *pTarget = CCSPlayerController::FromSlot(pSlots[i]);
+
+		if (!pTarget)
+			continue;
+
+		pTarget->AcceptInput(args[2], player, player, &value);
+		iFoundEnts++;
+	}
+
+	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i player controllers.", iFoundEnts);
+}
+
 CON_COMMAND_CHAT_FLAGS(map, "change map", ADMFLAG_CHANGEMAP)
 {
 	if (args.ArgC() < 2)
@@ -855,6 +997,41 @@ CON_COMMAND_CHAT_FLAGS(rcon, "send a command to server console", ADMFLAG_RCON)
 	}
 
 	g_pEngineServer2->ServerCommand(args.ArgS());
+}
+
+CON_COMMAND_CHAT_FLAGS(extend, "extend current map (negative value reduces map duration)", ADMFLAG_CHANGEMAP)
+{
+	if (args.ArgC() < 3)
+	{
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !extend <minutes>");
+		return;
+	}
+
+	int iExtendTime = V_StringToInt32(args[1], 0);
+
+	// CONVAR_TODO
+	ConVar* cvar = g_pCVar->GetConVar(g_pCVar->FindConVar("mp_timelimit"));
+
+	float flTimelimit;
+	memcpy(&flTimelimit, &cvar->values, sizeof(flTimelimit));
+
+	if (gpGlobals->curtime - g_pGameRules->m_flGameStartTime > flTimelimit * 60)
+		flTimelimit = (gpGlobals->curtime - g_pGameRules->m_flGameStartTime) / 60.0f + iExtendTime;
+	else
+	{
+		if (flTimelimit == 1)
+			flTimelimit = 0;
+		flTimelimit += iExtendTime;
+	}
+
+	if (flTimelimit <= 0)
+		flTimelimit = 1;
+
+	char buf[32];
+	V_snprintf(buf, sizeof(buf), "mp_timelimit %.6f", flTimelimit);
+
+	// CONVAR_TODO
+	g_pEngineServer2->ServerCommand(buf);
 }
 
 bool CAdminSystem::LoadAdmins()
