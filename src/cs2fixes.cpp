@@ -560,7 +560,7 @@ const char *CS2Fixes::GetLicense()
 
 const char *CS2Fixes::GetVersion()
 {
-	return "1.9.9 LLG vers";
+	return "1.9.9b";
 }
 
 const char *CS2Fixes::GetDate()

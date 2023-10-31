@@ -56,7 +56,7 @@ CON_COMMAND_CHAT(RS, "reset your score")
 	player->m_iScore = 0;
 	player->m_iMVPs = 0;
 
-	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 Ti-ai resetat scorul.");
+	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 You successfully reset your score.");
 }
 //************************************end reset**************************************************************
 CON_COMMAND_CHAT(ws, "fake ws")
@@ -64,13 +64,13 @@ CON_COMMAND_CHAT(ws, "fake ws")
     if (!player)
         return;
 
-    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "\3%s\1, In curand!", player->GetPlayerName());
+    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "\3%s\1, Play 2h to have access to !ws.", player->GetPlayerName());
 }
 CON_COMMAND_CHAT(help, "help")
 {
 		if (!player)
 		return;
-ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Comenzi: !medic, !rs,!RS, !sound, !stats, !vip, !stats, /u(admins chat)");
+ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Use commands: !medic, !rs,!RS, !sound, !stats, !vip, !stats, /u(admins chat)");
 }
 CON_COMMAND_CHAT(vip, "vip info")
 {
@@ -109,19 +109,19 @@ CON_COMMAND_CHAT(medic, "medic")
 
 	if (pEnt->m_iHealth() < 1)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Trebuie sa fi viu ca sa folosesti medkit.");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You need to be alive in order to use medkit.");
 		return;
 	}
 	
 	if (pZEPlayer->WasUsingMedkit())
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Trebuie sa fi viu sa poti folosi medkit");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You already used your medkit in this round");
 		return;
 	}
 
 		if (pEnt->m_iHealth() > 99)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Ai suficienta viata.");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You have enough life.");
 		return;
 	}
 
@@ -134,7 +134,7 @@ CON_COMMAND_CHAT(medic, "medic")
 
 	pZEPlayer->SetUsedMedkit(true);
 
-	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Ai folosit medkit! Viata ta este acum  \4%d\1 hp", health);
+	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Medkit used! Your health is now %d", health);
 	g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play items/healthshot_success_01");
 }
 CON_COMMAND_CHAT(stats, "get your stats")
