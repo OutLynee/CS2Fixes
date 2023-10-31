@@ -116,13 +116,6 @@ public:
 
 	Vector GetAbsOrigin() { return m_CBodyComponent->m_pSceneNode->m_vecAbsOrigin; }
 	void SetAbsOrigin(Vector vecOrigin) { m_CBodyComponent->m_pSceneNode->m_vecAbsOrigin = vecOrigin; }
-	void SetAbsVelocity(Vector vecVelocity) { m_vecAbsVelocity = vecVelocity; }
-	void SetBaseVelocity(Vector vecVelocity) { m_vecBaseVelocity = vecVelocity; }
-
-	void TakeDamage(int iDamage)
-	{
-		m_iHealth = m_iHealth() - iDamage;
-	}
 
 	void SetAbsVelocity(Vector vecVelocity) { m_vecAbsVelocity = vecVelocity; }
 	void SetBaseVelocity(Vector vecVelocity) { m_vecBaseVelocity = vecVelocity; }
@@ -155,12 +148,6 @@ public:
 		static int offset = g_GameConfig->GetOffset("IsEntityController");
 		return CALL_VIRTUAL(bool, offset, this);
 	}
-	
-	void AcceptInput(const char *pInputName, CEntityInstance *pActivator = nullptr, CEntityInstance *pCaller = nullptr, variant_string_t *value = nullptr)
-	{
-		addresses::CEntityInstance_AcceptInput(this, pInputName, pActivator, pCaller, value, 0);
-	}
-
 
 	void AcceptInput(const char *pInputName, CEntityInstance *pActivator = nullptr, CEntityInstance *pCaller = nullptr, variant_string_t *value = nullptr)
 	{
