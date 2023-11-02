@@ -67,7 +67,7 @@ void FASTCALL Detour_CGameRules_Constructor(CGameRules *pThis)
 void FASTCALL Detour_CBaseEntity_TakeDamageOld(Z_CBaseEntity *pThis, CTakeDamageInfo *inputInfo)
 {
 #ifdef _DEBUG
-	Message("\n--------------------------------\n"
+/*	Message("\n--------------------------------\n"
 			"TakeDamage on %s\n"
 			"Attacker: %s\n"
 			"Inflictor: %s\n"
@@ -80,7 +80,7 @@ void FASTCALL Detour_CBaseEntity_TakeDamageOld(Z_CBaseEntity *pThis, CTakeDamage
 			inputInfo->m_hInflictor.Get() ? inputInfo->m_hInflictor.Get()->GetClassname() : "NULL",
 			inputInfo->m_hAbility.Get() ? inputInfo->m_hAbility.Get()->GetClassname() : "NULL",
 			inputInfo->m_flDamage,
-			inputInfo->m_bitsDamageType);
+			inputInfo->m_bitsDamageType);*/
 #endif
 	CBaseEntity *pInflictor = inputInfo->m_hInflictor.Get();
 	const char *pszInflictorClass = pInflictor ? pInflictor->GetClassname() : "";
@@ -291,7 +291,8 @@ void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, 
 	}
 
 	if (*args[1] == '!' || *args[1] == '/')
-		ParseChatCommand(args.ArgS() + 1, pController); // The string returned by ArgS() starts with a \, so skip it
+		ParseChatCommand(args[1], pController);
+		//ParseChatCommand(args.ArgS() + 1, pController); // The string returned by ArgS() starts with a \, so skip it
 }
 
 void Detour_Log()
