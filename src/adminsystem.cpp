@@ -807,7 +807,7 @@ CON_COMMAND_CHAT_FLAGS(noclip, "toggle noclip on yourself", ADMFLAG_ROOT)
 	}
 }
 
-CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_RCON)
+CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{
@@ -870,7 +870,7 @@ CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_RCON)
 		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i entities.", iFoundEnts);
 }
 
-CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_RCON)
+CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{
@@ -908,7 +908,7 @@ CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_RCON
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i player pawns.", iFoundEnts);
 }
 
-CON_COMMAND_CHAT_FLAGS(entfirecontroller, "fire outputs at player controllers", ADMFLAG_RCON)
+CON_COMMAND_CHAT_FLAGS(entfirecontroller, "fire outputs at player controllers", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{
