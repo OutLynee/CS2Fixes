@@ -63,7 +63,7 @@ void UnregisterEventListeners()
 
 	g_vecEventListeners.Purge();
 }
-/*
+
 int g_iBombTimerCounter = 0;
 
 GAME_EVENT_F(bomb_planted)
@@ -101,7 +101,7 @@ GAME_EVENT_F(round_end)
 {
     g_iBombTimerCounter = 0;
 }
-*/
+
 // CONVAR_TODO
 bool g_bForceCT = false; //edited from true
 
