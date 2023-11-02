@@ -23,6 +23,8 @@
 #include "ctimer.h"
 #include "eventlistener.h"
 #include "entity/cbaseplayercontroller.h"
+#include "entity/ccsplayercontroller.h"
+#include "adminsystem.h"
 
 #include "tier0/memdbgon.h"
 #include "playermanager.h"
@@ -63,7 +65,7 @@ void UnregisterEventListeners()
 }
 
 // CONVAR_TODO
-bool g_bForceCT = true;
+bool g_bForceCT = false; //edited from true
 
 CON_COMMAND_F(c_force_ct, "toggle forcing CTs on every round", FCVAR_SPONLY | FCVAR_LINKED_CONCOMMAND)
 {
@@ -113,7 +115,16 @@ GAME_EVENT_F(player_spawn)
 
 	if (!pController)
 		return;
+//*******************************Medic****************************
+	int iPlayer = pController->GetPlayerSlot();
+		ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);
 
+		if (pZEPlayer)
+		{
+			pZEPlayer->SetUsedMedkit(false);
+		}
+//*******************************Medic****************************
+		CBasePlayerPawn *pPawn = pController->GetPawn();
 	CHandle<CCSPlayerController> hController = pController->GetHandle();
 
 	// Gotta do this on the next frame...
@@ -123,17 +134,27 @@ GAME_EVENT_F(player_spawn)
 
 		if (!pController || !pController->m_bPawnIsAlive())
 			return -1.0f;
-
-		CBasePlayerPawn *pPawn = pController->GetPawn();
-
-		// Just in case somehow there's health but the player is, say, an observer
-		if (!pPawn || !pPawn->IsAlive())
-			return -1.0f;
-
-		pPawn->m_pCollision->m_collisionAttribute().m_nCollisionGroup = COLLISION_GROUP_DEBRIS;
-		pPawn->m_pCollision->m_CollisionGroup = COLLISION_GROUP_DEBRIS;
-		pPawn->CollisionRulesChanged();
-
+			
+		int iPlayer = pController->GetPlayerSlot();					//clan tag
+		ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);	//
+		if (pZEPlayer->IsAdminFlagSet(ADMFLAG_ROOT))				//
+        {
+            pController->m_szClan("[OWNER]");     				//
+        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM1)) // t				//
+        {
+            pController->m_szClan("[CO-OWNER]");     				//
+        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM2)) // t				//
+        {
+            pController->m_szClan("[Administrator]");     				//
+        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM3)) // t				//
+        {
+            pController->m_szClan("[Moderator]");     				//
+        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM4)) // t)				//
+        {
+            pController->m_szClan("[Helper]");     				//
+        } else { 
+			pController->m_szClan("[Player]");     				//
+			   }
 		return -1.0f;
 	});
 }

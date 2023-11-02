@@ -36,6 +36,7 @@
 #include "playermanager.h"
 #include "igameevents.h"
 #include "gameconfig.h"
+#include "adminsystem.h"
 
 #define VPROF_ENABLED
 #include "tier0/vprof.h"
@@ -189,6 +190,9 @@ bool FASTCALL Detour_IsHearingClient(void* serverClient, int index)
 
 void FASTCALL Detour_UTIL_SayTextFilter(IRecipientFilter &filter, const char *pText, CCSPlayerController *pPlayer, uint64 eMessageType)
 {
+	int entindex = filter.GetRecipientIndex(0).Get();
+	CCSPlayerController *target = (CCSPlayerController *)g_pEntitySystem->GetBaseEntity((CEntityIndex)entindex);
+
 	if (pPlayer)
 		return UTIL_SayTextFilter(filter, pText, pPlayer, eMessageType);
 
@@ -199,49 +203,123 @@ void FASTCALL Detour_UTIL_SayTextFilter(IRecipientFilter &filter, const char *pT
 }
 
 void FASTCALL Detour_UTIL_SayText2Filter(
-	IRecipientFilter &filter,
-	CCSPlayerController *pEntity,
-	uint64 eMessageType,
-	const char *msg_name,
-	const char *param1,
-	const char *param2,
-	const char *param3,
-	const char *param4)
+    IRecipientFilter &filter,
+    CCSPlayerController *pEntity,
+    uint64 eMessageType,
+    const char *msg_name,
+    const char *param1,
+    const char *param2,
+    const char *param3,
+    const char *param4)
 {
-#ifdef _DEBUG
-    CPlayerSlot slot = filter.GetRecipientIndex(0);
-	CCSPlayerController* target = CCSPlayerController::FromSlot(slot);
+    int entindex = filter.GetRecipientIndex(0).Get() + 1;
+    CCSPlayerController *target = (CCSPlayerController *)g_pEntitySystem->GetBaseEntity((CEntityIndex)entindex);
 
-	if (target)
-		Message("Chat from %s to %s: %s\n", param1, target->GetPlayerName(), param2);
-#endif
+ int iCommandPlayer = pEntity->GetPlayerSlot();
 
-	UTIL_SayText2Filter(filter, pEntity, eMessageType, msg_name, param1, param2, param3, param4);
+ZEPlayer *pPlayer = g_playerManager->GetPlayer(iCommandPlayer);
+    
+char sBuffer[256];
+    
+    if (pPlayer->IsAdminFlagSet(ADMFLAG_ROOT)) // z
+    {
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\13OWNER\1] \10%s: \4%s", param1, param2);    
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM1)) // o
+    {
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\14CO-OWNER\1] \10%s: \4%s", param1, param2);
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM2)) // p
+    {
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\4ADMIN\1]\10 %s: \4%s", param1, param2);    
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM3)) // q
+    {
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\2MODERATOR\1]\14 %s: \4%s", param1, param2);    
+    }
+    else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM4)) //o
+    {
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\2HELPER\1]\14 %s: \2%s", param1, param2);
+    }
+    else {
+        V_snprintf(sBuffer, sizeof(sBuffer), " \1[\4Player\1]\1 %s: \1%s", param1, param2);
+    }
+    
+    //UTIL_SayText2Filter(filter, pEntity, eMessageType, msg_name, param1, param2, param3, param4);
+    UTIL_SayTextFilter(filter, sBuffer, pEntity, eMessageType);
 }
-
 void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, bool teamonly, int unk1, const char *unk2)
 {
-	bool bGagged = pController && pController->GetZEPlayer()->IsGagged();
+    bool bGagged = pController && pController->GetZEPlayer()->IsGagged();
 
-	if (!bGagged && *args[1] != '/')
-	{
-		Host_Say(pController, args, teamonly, unk1, unk2);
 
-		if (pController)
-		{
-			IGameEvent *pEvent = g_gameEventManager->CreateEvent("player_chat");
+    if (*args[1] == '@' && teamonly)
+    {
+        const char* sFormat = args[1];
+        if (sFormat[1] == '\0')
+        {
+            ClientPrint(pController, HUD_PRINTTALK, CHAT_PREFIX"Usage: @ <message>");
+            return;
+        }
 
-			if (pEvent)
-			{
-				pEvent->SetBool("teamonly", teamonly);
-				pEvent->SetInt("userid", pController->entindex());
-				pEvent->SetString("text", args[1]);
+        sFormat++;
 
-				g_gameEventManager->FireEvent(pEvent, true);
-			}
-		}
-	}
+        ZEPlayer* pAdmin = g_playerManager->GetPlayer(pController->GetPlayerSlot());
+        if (pAdmin && pAdmin->IsAdminFlagSet(ADMFLAG_SLAY))
+        {
+            for (int i = 0; i < gpGlobals->maxClients; i++)
+            {
+                ZEPlayer* pPlayer = g_playerManager->GetPlayer(i);
+                CCSPlayerController* cPlayer = CCSPlayerController::FromSlot(i);
 
+                if (!cPlayer || !pPlayer || pPlayer->IsFakeClient() || !pPlayer->IsAdminFlagSet(ADMFLAG_SLAY))
+                    continue;
+
+                //ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+				ClientPrint(cPlayer, HUD_PRINTTALK," \3*************\14Admins Chat\3*************");
+        		ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+      			ClientPrint(cPlayer, HUD_PRINTTALK, " \3**************************************");
+            }
+            return;
+        }
+
+        for (int i = 0; i < gpGlobals->maxClients; i++)
+        {
+            ZEPlayer* pPlayer = g_playerManager->GetPlayer(i);
+            CCSPlayerController* cPlayer = CCSPlayerController::FromSlot(i);
+
+            if (!cPlayer || !pPlayer || pPlayer->IsFakeClient() || !pPlayer->IsAdminFlagSet(ADMFLAG_SLAY))
+                continue;
+
+            ClientPrint(cPlayer, HUD_PRINTTALK, "(\2REPORT\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+        }
+
+        ClientPrint(pController, HUD_PRINTTALK, "(\2REPORT\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+
+        return;
+    }
+
+    if (!bGagged && *args[1] != '/')
+    {
+        Host_Say(pController, args, teamonly, unk1, unk2);
+
+        if (pController)
+        {
+            IGameEvent *pEvent = g_gameEventManager->CreateEvent("player_chat");
+
+            if (pEvent)
+            {
+                pEvent->SetBool("teamonly", teamonly);
+                pEvent->SetInt("userid", pController->entindex());
+                pEvent->SetString("text", args[1]);
+
+                g_gameEventManager->FireEvent(pEvent, true);
+            }
+        }
+    }
+
+    if (*args[1] == '!' || *args[1] == '/')
+        ParseChatCommand(args[1], pController);
 	if (*args[1] == '!' || *args[1] == '/')
 		ParseChatCommand(args.ArgS() + 1, pController); // The string returned by ArgS() starts with a \, so skip it
 }
