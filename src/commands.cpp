@@ -38,6 +38,7 @@
 extern CEntitySystem *g_pEntitySystem;
 extern IVEngineServer2* g_pEngineServer2;
 extern ISteamHTTP* g_http;
+#include "addons.h"
 
 WeaponMapEntry_t WeaponMap[] = {
 	{"bizon",		  "weapon_bizon",			 1400, 26},
