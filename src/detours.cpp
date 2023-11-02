@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+ 
 #include "cdetour.h"
 #include "common.h"
 #include "module.h"
@@ -36,6 +36,7 @@
 #include "playermanager.h"
 #include "igameevents.h"
 #include "gameconfig.h"
+#include "adminsystem.h"
 
 #define VPROF_ENABLED
 #include "tier0/vprof.h"
@@ -222,6 +223,53 @@ void FASTCALL Detour_UTIL_SayText2Filter(
 void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, bool teamonly, int unk1, const char *unk2)
 {
 	bool bGagged = pController && pController->GetZEPlayer()->IsGagged();
+
+
+ if (*args[1] == '@' && teamonly)
+    {
+        const char* sFormat = args[1];
+        if (sFormat[1] == '\0')
+        {
+            ClientPrint(pController, HUD_PRINTTALK, CHAT_PREFIX"Usage: @ <message>");
+            return;
+        }
+
+        sFormat++;
+
+        ZEPlayer* pAdmin = g_playerManager->GetPlayer(pController->GetPlayerSlot());
+        if (pAdmin && pAdmin->IsAdminFlagSet(ADMFLAG_SLAY))
+        {
+            for (int i = 0; i < gpGlobals->maxClients; i++)
+            {
+                ZEPlayer* pPlayer = g_playerManager->GetPlayer(i);
+                CCSPlayerController* cPlayer = CCSPlayerController::FromSlot(i);
+
+                if (!cPlayer || !pPlayer || pPlayer->IsFakeClient() || !pPlayer->IsAdminFlagSet(ADMFLAG_SLAY))
+                    continue;
+
+                //ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+				ClientPrint(cPlayer, HUD_PRINTTALK," \3*************\14Admins Chat\3*************");
+        		ClientPrint(cPlayer, HUD_PRINTTALK, "(\2Admin\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+      			ClientPrint(cPlayer, HUD_PRINTTALK, " \3**************************************");
+            }
+            return;
+        }
+
+        for (int i = 0; i < gpGlobals->maxClients; i++)
+        {
+            ZEPlayer* pPlayer = g_playerManager->GetPlayer(i);
+            CCSPlayerController* cPlayer = CCSPlayerController::FromSlot(i);
+
+            if (!cPlayer || !pPlayer || pPlayer->IsFakeClient() || !pPlayer->IsAdminFlagSet(ADMFLAG_SLAY))
+                continue;
+
+            ClientPrint(cPlayer, HUD_PRINTTALK, "(\2REPORT\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+        }
+
+        ClientPrint(pController, HUD_PRINTTALK, "(\2REPORT\1) \2%s\1: \2%s\1", pController->GetPlayerName(), sFormat);
+
+        return;
+    }
 
 	if (!bGagged && *args[1] != '/')
 	{

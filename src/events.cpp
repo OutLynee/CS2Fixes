@@ -23,6 +23,8 @@
 #include "ctimer.h"
 #include "eventlistener.h"
 #include "entity/cbaseplayercontroller.h"
+#include "entity/ccsplayercontroller.h"
+#include "adminsystem.h"
 
 #include "tier0/memdbgon.h"
 #include "playermanager.h"
@@ -63,7 +65,7 @@ void UnregisterEventListeners()
 }
 
 // CONVAR_TODO
-bool g_bForceCT = true;
+bool g_bForceCT = false; //edited from true
 
 CON_COMMAND_F(c_force_ct, "toggle forcing CTs on every round", FCVAR_SPONLY | FCVAR_LINKED_CONCOMMAND)
 {
@@ -113,6 +115,15 @@ GAME_EVENT_F(player_spawn)
 
 	if (!pController)
 		return;
+		//*******************************Medic****************************
+	int iPlayer = pController->GetPlayerSlot();
+		ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);
+
+		if (pZEPlayer)
+		{
+			pZEPlayer->SetUsedMedkit(false);
+		}
+//*******************************Medic****************************
 
 	CHandle<CCSPlayerController> hController = pController->GetHandle();
 
