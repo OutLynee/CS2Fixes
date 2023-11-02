@@ -92,16 +92,6 @@ GAME_EVENT_F(bomb_defused)
     g_iBombTimerCounter = 0;
 }
 
-GAME_EVENT_F(round_start)
-{
-    g_iBombTimerCounter = 0;
-}
-
-GAME_EVENT_F(round_end)
-{
-    g_iBombTimerCounter = 0;
-}
-
 // CONVAR_TODO
 bool g_bForceCT = false; //edited from true
 
@@ -215,6 +205,7 @@ GAME_EVENT_F(round_start)
 
 		pPlayer->SetTotalDamage(0);
 	}
+	g_iBombTimerCounter = 0;
 }
 
 GAME_EVENT_F(round_end)
@@ -256,4 +247,5 @@ GAME_EVENT_F(round_end)
 		ClientPrintAll(HUD_PRINTTALK, " %c%i. %s \x01- \x07%i DMG", colorMap[MIN(i, 3)], i + 1, pController->GetPlayerName(), pPlayer->GetTotalDamage());
 		pPlayer->SetTotalDamage(0);
 	}
+	g_iBombTimerCounter = 0;
 }
