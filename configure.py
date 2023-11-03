@@ -27,8 +27,6 @@ parser.options.add_argument('--hl2sdk-root', type=str, dest='hl2sdk_root', defau
                        help='Root search folder for HL2SDKs')
 parser.options.add_argument('--mms_path', type=str, dest='mms_path', default=None,
                        help='Metamod:Source source tree folder')
-parser.options.add_argument(action='store_const', const='1', dest='debug',
-                       help='Enable debugging symbols')
 parser.options.add_argument('--enable-optimize', action='store_const', const='1', dest='opt',
                        help='Enable optimization')
 parser.options.add_argument('-s', '--sdks', default='all', dest='sdks',
