@@ -16,7 +16,7 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 #else
-#include "utils/module.h"
+#include "utils/modules.h"
 #endif
 #include <string>
 
