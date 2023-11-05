@@ -109,7 +109,7 @@ int GetNeededExtendCount()
 	return (int)(iOnlinePlayers * g_ExtendSucceedRatio) + 1;
 }
 
-CON_COMMAND_CHAT(rtv, "Vote to end the current map sooner.")
+CON_COMMAND_CHAT(votemap, "Vote to end the current map sooner.")
 {
 	if (!player)
 	{
@@ -182,7 +182,7 @@ CON_COMMAND_CHAT(rtv, "Vote to end the current map sooner.")
 	ClientPrintAll(HUD_PRINTTALK, CHAT_PREFIX "%s wants to rock the vote (%i voted, %i needed).", player->GetPlayerName(), iCurrentRTVCount+1, iNeededRTVCount);
 }
 
-CON_COMMAND_CHAT(unrtv, "Remove your vote to end the current map sooner.")
+CON_COMMAND_CHAT(unvotemap, "Remove your vote to end the current map sooner.")
 {
 	if (!player)
 	{
@@ -358,7 +358,7 @@ CON_COMMAND_CHAT(unve, "Remove your vote to extend current map.")
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "You no longer want to extend current map.");
 }
 
-CON_COMMAND_CHAT_FLAGS(blockrtv, "Block the ability for players to vote to end current map sooner.", ADMFLAG_CHANGEMAP)
+CON_COMMAND_CHAT_FLAGS(blockvotemap, "Block the ability for players to vote to end current map sooner.", ADMFLAG_CHANGEMAP)
 {
 	if (g_RTVState == ERTVState::BLOCKED_BY_ADMIN)
 	{
@@ -376,7 +376,7 @@ CON_COMMAND_CHAT_FLAGS(blockrtv, "Block the ability for players to vote to end c
 	ClientPrintAll(HUD_PRINTTALK, CHAT_PREFIX ADMIN_PREFIX "blocked vote for RTV.", pszCommandPlayerName);
 }
 
-CON_COMMAND_CHAT_FLAGS(unblockrtv, "Restore the ability for players to vote to end current map sooner.", ADMFLAG_CHANGEMAP)
+CON_COMMAND_CHAT_FLAGS(unblockvotemap, "Restore the ability for players to vote to end current map sooner.", ADMFLAG_CHANGEMAP)
 {
 	if (g_RTVState == ERTVState::RTV_ALLOWED)
 	{
