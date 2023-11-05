@@ -64,6 +64,34 @@ void UnregisterEventListeners()
 	g_vecEventListeners.Purge();
 }
 
+int g_iBombTimerCounter = 0;
+
+GAME_EVENT_F(bomb_planted)
+{
+    ConVar* cvar = g_pCVar->GetConVar(g_pCVar->FindConVar("mp_c4timer"));
+
+    int iC4;
+    memcpy(&iC4, &cvar->values, sizeof(iC4));
+
+    g_iBombTimerCounter = iC4;
+
+    new CTimer(1.0f, false, []()
+    {
+        if (g_iBombTimerCounter <= 0)
+            return -1.0f;
+
+        g_iBombTimerCounter--;
+
+        ClientPrintAll(HUD_PRINTCENTER, "C4: %d", g_iBombTimerCounter);
+        return 1.0f;
+    });
+}
+
+GAME_EVENT_F(bomb_defused)
+{
+    g_iBombTimerCounter = 0;
+}
+
 // CONVAR_TODO
 bool g_bForceCT = false; //edited from true
 
@@ -115,7 +143,7 @@ GAME_EVENT_F(player_spawn)
 
 	if (!pController)
 		return;
-//*******************************Medic****************************
+		//*******************************Medic****************************
 	int iPlayer = pController->GetPlayerSlot();
 		ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);
 
@@ -124,7 +152,7 @@ GAME_EVENT_F(player_spawn)
 			pZEPlayer->SetUsedMedkit(false);
 		}
 //*******************************Medic****************************
-		CBasePlayerPawn *pPawn = pController->GetPawn();
+
 	CHandle<CCSPlayerController> hController = pController->GetHandle();
 
 	// Gotta do this on the next frame...
@@ -134,27 +162,17 @@ GAME_EVENT_F(player_spawn)
 
 		if (!pController || !pController->m_bPawnIsAlive())
 			return -1.0f;
-			
-		int iPlayer = pController->GetPlayerSlot();					//clan tag
-		ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);	//
-		if (pZEPlayer->IsAdminFlagSet(ADMFLAG_ROOT))				//
-        {
-            pController->m_szClan("[OWNER]");     				//
-        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM1)) // t				//
-        {
-            pController->m_szClan("[CO-OWNER]");     				//
-        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM2)) // t				//
-        {
-            pController->m_szClan("[Administrator]");     				//
-        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM3)) // t				//
-        {
-            pController->m_szClan("[Moderator]");     				//
-        } else if (pZEPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM4)) // t)				//
-        {
-            pController->m_szClan("[Helper]");     				//
-        } else { 
-			pController->m_szClan("[Player]");     				//
-			   }
+
+		CBasePlayerPawn *pPawn = pController->GetPawn();
+
+		// Just in case somehow there's health but the player is, say, an observer
+		if (!pPawn || !pPawn->IsAlive())
+			return -1.0f;
+
+		pPawn->m_pCollision->m_collisionAttribute().m_nCollisionGroup = COLLISION_GROUP_DEBRIS;
+		pPawn->m_pCollision->m_CollisionGroup = COLLISION_GROUP_DEBRIS;
+		pPawn->CollisionRulesChanged();
+
 		return -1.0f;
 	});
 }
@@ -187,6 +205,7 @@ GAME_EVENT_F(round_start)
 
 		pPlayer->SetTotalDamage(0);
 	}
+	g_iBombTimerCounter = 0;
 }
 
 GAME_EVENT_F(round_end)
@@ -228,4 +247,5 @@ GAME_EVENT_F(round_end)
 		ClientPrintAll(HUD_PRINTTALK, " %c%i. %s \x01- \x07%i DMG", colorMap[MIN(i, 3)], i + 1, pController->GetPlayerName(), pPlayer->GetTotalDamage());
 		pPlayer->SetTotalDamage(0);
 	}
+	g_iBombTimerCounter = 0;
 }

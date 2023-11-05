@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ */ 
 
 #include "protobuf/generated/usermessages.pb.h"
 
@@ -516,7 +516,7 @@ CON_COMMAND_CHAT_FLAGS(slap, "slap a player", ADMFLAG_SLAY)
 		pPawn->SetAbsVelocity(velocity);
 
 		int iDamage = V_StringToInt32(args[2], 0);
-
+			
 		if (iDamage > 0)
 			pPawn->TakeDamage(iDamage);
 
@@ -600,7 +600,7 @@ CON_COMMAND_CHAT_FLAGS(move, "set a player's team", ADMFLAG_SLAY)
 }
 //******************************************END MOVE************************************************
 //*****************************************silence***********************************************
-CON_COMMAND_CHAT_FLAGS(silence, "mutes a player", ADMFLAG_CHAT)
+CON_COMMAND_CHAT_FLAGS(silence, "silence a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 3)
 	{
@@ -775,6 +775,7 @@ CON_COMMAND_CHAT_FLAGS(unsilence, "unsilence a player", ADMFLAG_CHAT)
 	PrintMultiAdminAction(nType, pszCommandPlayerName, "unsilenced");
 }
 /**********************************end unsilence*******************************************************/
+
 CON_COMMAND_CHAT_FLAGS(noclip, "toggle noclip on yourself", ADMFLAG_ROOT)
 {
 	if (!player)
@@ -806,7 +807,7 @@ CON_COMMAND_CHAT_FLAGS(noclip, "toggle noclip on yourself", ADMFLAG_ROOT)
 	}
 }
 
-CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_RCON)
+CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{
@@ -869,7 +870,7 @@ CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_RCON)
 		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i entities.", iFoundEnts);
 }
 
-CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_RCON)
+CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{
@@ -907,7 +908,7 @@ CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_RCON
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Input successful on %i player pawns.", iFoundEnts);
 }
 
-CON_COMMAND_CHAT_FLAGS(entfirecontroller, "fire outputs at player controllers", ADMFLAG_RCON)
+CON_COMMAND_CHAT_FLAGS(entfirecontroller, "fire outputs at player controllers", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{

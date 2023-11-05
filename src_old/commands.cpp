@@ -140,7 +140,7 @@ void ParseWeaponCommand(CCSPlayerController *pController, const char *pszWeaponN
 		}
 	}
 }
-
+ 
 void ParseChatCommand(const char *pMessage, CCSPlayerController *pController)
 {
 	if (!pController || !pController->IsConnected())
