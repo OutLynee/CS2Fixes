@@ -100,7 +100,7 @@ CON_COMMAND_CHAT_FLAGS(ban, "ban a player", ADMFLAG_BAN)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !ban <name> <duration/0 (permanent)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /ban <name> <duration/0 (permanent)>");
 		return;
 	}
 
@@ -163,7 +163,7 @@ CON_COMMAND_CHAT_FLAGS(mute, "mutes a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !mute <name> <duration/0 (permanent)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /mute <name> <duration/0 (permanent)>");
 		return;
 	}
 
@@ -233,7 +233,7 @@ CON_COMMAND_CHAT_FLAGS(unmute, "unmutes a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !unmute <name>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /unmute <name>");
 		return;
 	}
 
@@ -282,7 +282,7 @@ CON_COMMAND_CHAT_FLAGS(gag, "gag a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !gag <name> <duration/0 (permanent)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /gag <name> <duration/0 (permanent)>");
 		return;
 	}
 
@@ -354,7 +354,7 @@ CON_COMMAND_CHAT_FLAGS(ungag, "ungags a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !ungag <name>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /ungag <name>");
 		return;
 	}
 
@@ -403,7 +403,7 @@ CON_COMMAND_CHAT_FLAGS(kick, "kick a player", ADMFLAG_KICK)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !kick <name>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /kick <name>");
 		return;
 	}
 
@@ -440,7 +440,7 @@ CON_COMMAND_CHAT_FLAGS(slay, "slay a player", ADMFLAG_SLAY)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !slay <name>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /slay <name>");
 		return;
 	}
 
@@ -478,7 +478,7 @@ CON_COMMAND_CHAT_FLAGS(slap, "slap a player", ADMFLAG_SLAY)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !slap <name> <optional damage>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /slap <name> <optional damage>");
 		return;
 	}
 
@@ -538,7 +538,7 @@ CON_COMMAND_CHAT_FLAGS(move, "set a player's team", ADMFLAG_SLAY)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !move <name> <team (ct,t,spec)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /move <name> <team (ct,t,spec)>");
 		return;
 	}
 
@@ -604,7 +604,7 @@ CON_COMMAND_CHAT_FLAGS(silence, "silence a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !silence <name> <duration/0 (permanent)>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /silence <name> <duration/0 (permanent)>");
 		return;
 	}
 
@@ -706,7 +706,7 @@ CON_COMMAND_CHAT_FLAGS(unsilence, "unsilence a player", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !unsilence <name>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /unsilence <name>");
 		return;
 	}
 
@@ -811,7 +811,7 @@ CON_COMMAND_CHAT_FLAGS(entfire, "fire outputs at entities", ADMFLAG_ROOT)
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !entfire <name> <input> <optional parameter>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /entfire <name> <input> <optional parameter>");
 		return;
 	}
 
@@ -874,7 +874,7 @@ CON_COMMAND_CHAT_FLAGS(entfirepawn, "fire outputs at player pawns", ADMFLAG_ROOT
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !entfirepawn <name> <input> <optional parameter>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /entfirepawn <name> <input> <optional parameter>");
 		return;
 	}
 
@@ -912,7 +912,7 @@ CON_COMMAND_CHAT_FLAGS(entfirecontroller, "fire outputs at player controllers", 
 {
 	if (args.ArgC() < 3)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !entfirecontroller <name> <input> <optional parameter>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /entfirecontroller <name> <input> <optional parameter>");
 		return;
 	}
 
@@ -950,7 +950,7 @@ CON_COMMAND_CHAT_FLAGS(map, "change map", ADMFLAG_CHANGEMAP)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX"Usage: !map <mapname>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX"Usage: /map <mapname>");
 		return;
 	}
 
@@ -976,7 +976,7 @@ CON_COMMAND_CHAT_FLAGS(hsay, "say something as a hud hint", ADMFLAG_CHAT)
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !hsay <message>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /hsay <message>");
 		return;
 	}
 
@@ -993,7 +993,7 @@ CON_COMMAND_CHAT_FLAGS(rcon, "send a command to server console", ADMFLAG_RCON)
 
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !rcon <command>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /rcon <command>");
 		return;
 	}
 
@@ -1004,7 +1004,7 @@ CON_COMMAND_CHAT_FLAGS(extend, "extend current map (negative value reduces map d
 {
 	if (args.ArgC() < 2)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: !extend <minutes>");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /extend <minutes>");
 		return;
 	}
 
