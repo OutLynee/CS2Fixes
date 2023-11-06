@@ -70,7 +70,9 @@ CON_COMMAND_CHAT(help, "help")
 {
 		if (!player)
 		return;
-ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Valid commands: !medic, !rs, !RS, !sound, !stats, !vip, !stats, /u <msg to admins>");
+
+ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Player commands: !medic, !rs, !RS, !sound, !stats, !vip, !stats, !hide, /u.");
+ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Admin commands: /ban, /mute, /unmute, /gag, /ungag, /kick, /slay, /slap, /move, /silence, /unsilence, /entfire, /entfirepawn, /entfirecontroller, /map, /hsay, /rcon, /extend.");
 }
 CON_COMMAND_CHAT(vip, "vip info")
 {
