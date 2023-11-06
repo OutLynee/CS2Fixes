@@ -11,7 +11,7 @@ CON_COMMAND_CHAT(u, "admins chat")
     if (args.ArgC() < 2)
     {
         
-        ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /u <message> to admins");
+        ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIX "Usage: /u <msg to admins>");
         return;
     }
 	
@@ -42,7 +42,7 @@ CON_COMMAND_CHAT(rs, "reset your score")
 	player->m_iScore = 0;
 	player->m_iMVPs = 0;
 
-	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 You successfully reset your score.");
+	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 You have successfully reset your score.");
 }
 CON_COMMAND_CHAT(RS, "reset your score")
 {
@@ -56,7 +56,7 @@ CON_COMMAND_CHAT(RS, "reset your score")
 	player->m_iScore = 0;
 	player->m_iMVPs = 0;
 
-	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 You successfully reset your score.");
+	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 You have successfully reset your score.");
 }
 //************************************end reset**************************************************************
 CON_COMMAND_CHAT(ws, "fake ws")
@@ -64,13 +64,13 @@ CON_COMMAND_CHAT(ws, "fake ws")
     if (!player)
         return;
 
-    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "\3%s\1, Play 2h to have access to !ws.", player->GetPlayerName());
+    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "\3%s\1, play 2 more hours to access !ws.", player->GetPlayerName());
 }
 CON_COMMAND_CHAT(help, "help")
 {
 		if (!player)
 		return;
-ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Use commands: !medic, !rs,!RS, !sound, !stats, !vip, !stats, /u(admins chat)");
+ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Use commands: !medic, !rs, !RS, !sound, !stats, !vip, !stats, /u <msg to admins>");
 }
 CON_COMMAND_CHAT(vip, "vip info")
 {
@@ -79,8 +79,8 @@ CON_COMMAND_CHAT(vip, "vip info")
 
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Starting health: \5 100-115.");
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Starting armor: \5 110-200.");
-	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Money add every round: \5 1000-5000.");
-	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Starting with: \5 defeuser, he, smoke, molotov, flashbang, healthshot .");
+	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Money added every round: \5 1000-5000.");
+	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Starting with: \5 defeuser, he, smoke, molotov, flashbang, healthshot.");
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1Smoke color: \5 green, \14blue, \7red, \2r\4a\3n\5d\6o\7m.");
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXV"\1For buying VIP, contact \7FOUNDER.");
 }
@@ -101,7 +101,7 @@ CON_COMMAND_CHAT(medic, "medic")
 	ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);
 	if (!pZEPlayer)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"pZEPlayer not valid.");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Invalid target.");
 		return;
 	}
 
@@ -109,19 +109,19 @@ CON_COMMAND_CHAT(medic, "medic")
 
 	if (pEnt->m_iHealth() < 1)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You need to be alive in order to use medkit.");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You need to be alive in order to use your medkit.");
 		return;
 	}
 	
 	if (pZEPlayer->WasUsingMedkit())
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You already used your medkit in this round");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You already used your medkit in this round.");
 		return;
 	}
 
 		if (pEnt->m_iHealth() > 99)
 	{
-		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You have enough life.");
+		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You already have enough life.");
 		return;
 	}
 
@@ -134,8 +134,8 @@ CON_COMMAND_CHAT(medic, "medic")
 
 	pZEPlayer->SetUsedMedkit(true);
 
-	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Medkit used! Your health is now %d", health);
-	g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play items/healthshot_success_01");
+	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Medkit used! Your health is now at %d", health);
+	//g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play items/healthshot_success_01"); // Disabled due to not being affected by the ingame volume mixer.
 }
 CON_COMMAND_CHAT(stats, "get your stats")
 {
