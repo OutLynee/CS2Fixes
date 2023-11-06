@@ -70,7 +70,7 @@ CON_COMMAND_CHAT(help, "help")
 {
 		if (!player)
 		return;
-ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Use commands: !medic, !rs, !RS, !sound, !stats, !vip, !stats, /u <msg to admins>");
+ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "Valid commands: !medic, !rs, !RS, !sound, !stats, !vip, !stats, /u <msg to admins>");
 }
 CON_COMMAND_CHAT(vip, "vip info")
 {
