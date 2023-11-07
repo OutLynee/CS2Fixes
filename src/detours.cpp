@@ -259,8 +259,8 @@ void FASTCALL Detour_UTIL_SayText2Filter(
     
     UTIL_SayTextFilter(filter, sBuffer, pEntity, eMessageType);
 
-	char jsonStr[2048];
-    snprintf(jsonStr, sizeof(jsonStr), jsonTemplate, param1, param2);
+	//char jsonStr[2048];
+    //snprintf(jsonStr, sizeof(jsonStr), jsonTemplate, param1, param2);
     //g_HTTPManager.POST(webHookUrl, jsonStr, &HttpCallback);
 }
 
