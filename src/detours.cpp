@@ -236,7 +236,10 @@ void FASTCALL Detour_UTIL_SayText2Filter(
     else if (pPlayer->IsAdminFlagSet(ADMFLAG_CUSTOM4)) //o
     {
         V_snprintf(sBuffer, sizeof(sBuffer), " \1[\2HELPER\1]\14 %s: \2%s", param1, param2);
-    }
+    }       
+	 else {
+            V_snprintf(sBuffer, sizeof(sBuffer), " \1[\4Player\1]\1 %s: \1%s", param1, param2);
+        }
     
     UTIL_SayTextFilter(filter, sBuffer, pEntity, eMessageType);
 
