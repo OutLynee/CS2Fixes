@@ -137,7 +137,7 @@ CON_COMMAND_CHAT(medic, "medic")
 	pZEPlayer->SetUsedMedkit(true);
 
 	ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"Medkit used! Your health is now at %d", health);
-	//g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play items/healthshot_success_01"); // Disabled due to not being affected by the ingame volume mixer.
+	g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play items/healthshot_success_01"); // Disabled due to not being affected by the ingame volume mixer.
 }
 CON_COMMAND_CHAT(stats, "get your stats")
 {
