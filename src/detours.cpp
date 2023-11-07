@@ -259,9 +259,6 @@ void FASTCALL Detour_UTIL_SayText2Filter(
     
     UTIL_SayTextFilter(filter, sBuffer, pEntity, eMessageType);
 
-	//char jsonStr[2048];
-    //snprintf(jsonStr, sizeof(jsonStr), jsonTemplate, param1, param2);
-    //g_HTTPManager.POST(webHookUrl, jsonStr, &HttpCallback);
 }
 
 void FASTCALL Detour_Host_Say(CCSPlayerController *pController, CCommand &args, bool teamonly, int unk1, const char *unk2)
