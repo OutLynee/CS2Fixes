@@ -17,7 +17,7 @@ CON_COMMAND_CHAT(u, "admins chat")
 	
 for (int i = 0; i < MAXPLAYERS; i++)
 	{
-    ZEPlayer* pAdmin = g_playerManager->GetPlayer(i);
+    ZEPlayer* pAdmin = g_playerManager->GetPlayer(i); //player who sent mesg
     CBasePlayerController* cPlayer = (CBasePlayerController*)g_pEntitySystem->GetBaseEntity((CEntityIndex)(i + 1));
 
     if (!cPlayer || !pAdmin || pAdmin->IsFakeClient() || !pAdmin->IsAdminFlagSet(ADMFLAG_SLAY))
@@ -59,12 +59,19 @@ CON_COMMAND_CHAT(RS, "reset your score")
 	ClientPrint(player, HUD_PRINTTALK, " \7[Reset Score]\1 You have successfully reset your score.");
 }
 //************************************end reset**************************************************************
-CON_COMMAND_CHAT(ws, "fake ws")
+CON_COMMAND_CHAT(ws, "use console command for skins")
 {
     if (!player)
         return;
 
-    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS "\3%s\1, play 2 more hours to access !ws.", player->GetPlayerName());
+    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS " \7[Skin]\1 Use console to activate skins \2skin <id skin> 0 0.");
+}
+CON_COMMAND_CHAT(knife, "use consola command for knife")
+{
+    if (!player)
+        return;
+
+    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS " \7[Skin]\1 Use console to activate knife \2skin 0 0 0 <knife id>.");
 }
 CON_COMMAND_CHAT(help, "help")
 {
@@ -118,6 +125,7 @@ CON_COMMAND_CHAT(medic, "medic")
 	if (pZEPlayer->WasUsingMedkit())
 	{
 		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You already used your medkit in this round.");
+		g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play training/puck_fail");
 		return;
 	}
 
