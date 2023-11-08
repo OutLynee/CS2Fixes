@@ -64,14 +64,14 @@ CON_COMMAND_CHAT(ws, "use console command for skins")
     if (!player)
         return;
 
-    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS " \7[Skin]\1 Use console to activate skins \2skin <id skin> 0 0.");
+    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS " \7[Skin]\1 Use the console to use skins: \2skin <skin id> 0 0.");
 }
 CON_COMMAND_CHAT(knife, "use consola command for knife")
 {
     if (!player)
         return;
 
-    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS " \7[Skin]\1 Use console to activate knife \2skin 0 0 0 <knife id>.");
+    ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXS " \7[Skin]\1 Use the console to use knifes: \2skin 0 0 0 <knife id>.");
 }
 CON_COMMAND_CHAT(help, "help")
 {
