@@ -23,15 +23,11 @@
 #include "ctimer.h"
 #include "eventlistener.h"
 #include "entity/cbaseplayercontroller.h"
-#include "cdetour.h"
+#include "entity/ccsplayercontroller.h"
+#include "adminsystem.h"
 
 #include "tier0/memdbgon.h"
 #include "playermanager.h"
-#include "entity/ccsplayercontroller.h"
-#include "adminsystem.h"
-#include <memory>
-#include <string>
-#include <stdexcept>
 
 extern IGameEventManager2 *g_gameEventManager;
 extern IServerGameClients *g_pSource2GameClients;
@@ -173,12 +169,9 @@ GAME_EVENT_F(player_spawn)
 		if (!pPawn || !pPawn->IsAlive())
 			return -1.0f;
 
-		int iPlayer = pController->GetPlayerSlot();
-		ZEPlayer* pZEPlayer = g_playerManager->GetPlayer(iPlayer);
 
-		if(!pZEPlayer)
+
 		return -1.0f;
-		
 	});
 }
 
