@@ -118,7 +118,6 @@ CON_COMMAND_CHAT(medic, "medic")
 	if (pZEPlayer->WasUsingMedkit())
 	{
 		ClientPrint(player, HUD_PRINTTALK, CHAT_PREFIXM"You already used your medkit in this round.");
-		g_pEngineServer2->ClientCommand(player->GetPlayerSlot(), "play training\puck_fail");
 		return;
 	}
 
